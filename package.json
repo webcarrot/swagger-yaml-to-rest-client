@@ -1,0 +1,48 @@
+{
+  "name": "@webcarrot/swagger-yaml-to-rest-client",
+  "version": "0.0.1",
+  "description": "Generate TypeScript Rest API client from swagger yaml file",
+  "main": "dist/index.js",
+  "bin": {
+    "webcarrot-swagger-yaml-to-rest-client": "./bin/cli.run"
+  },
+  "scripts": {
+    "clean": "rm -rf ./dist/*",
+    "build": "npm run clean && tsc && copy-declaration-ts ./src ./dist",
+    "dev": "ts-node ./src/cli.ts",
+    "test": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webcarrot/swagger-yaml-to-rest-client.git"
+  },
+  "keywords": [
+    "swagger",
+    "rest",
+    "api",
+    "typescript",
+    "generator"
+  ],
+  "author": {
+    "email": "admin@webcarrot.pl",
+    "name": "webcarrot"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/webcarrot/swagger-yaml-to-rest-client/issues"
+  },
+  "homepage": "https://github.com/webcarrot/swagger-yaml-to-rest-client#readme",
+  "devDependencies": {
+    "@types/node": "^12.7.11",
+    "@types/yaml": "^1.2.0",
+    "@types/yargs": "^13.0.3",
+    "@webcarrot/copy-declaration-ts": "^1.0.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "yaml": "^1.7.1",
+    "yargs": "^14.2.0"
+  }
+}

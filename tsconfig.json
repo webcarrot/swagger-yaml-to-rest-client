@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "sourceMap": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2017",
+    "lib": ["es7", "es2017"],
+    "paths": {
+      "@webcarrot/swagger-yaml-to-rest-client": ["./src/index"],
+      "@webcarrot/swagger-yaml-to-rest-client/*": ["./src/*"]
+    }
+  },
+  "exclude": ["./dist/**/*", "./bin/*"],
+  "esModuleInterop": true,
+  "allowSyntheticDefaultImports": true
+}
