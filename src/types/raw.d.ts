@@ -15,58 +15,59 @@ export type RawComponentsData = {
 
 export type RawPathMethodParameterIn = "path" | "query";
 
-export type RawSchemaString = {
-  type: "string";
+export type RawSchemaBase = {
+  description?: string;
+  example?: any;
+};
+
+export type RawSchemaString = RawSchemaBase & {
+  type?: "string";
   maxLength?: number;
   format?: string;
   enum?: ReadonlyArray<string>;
-  description?: string;
-  example?: string;
 };
 
-export type RawSchemaInteger = {
+export type RawSchemaInteger = RawSchemaBase & {
   type: "integer";
   format?: string;
   minimum?: number;
   maximum?: number;
   default?: number;
-  description?: string;
-  example?: string | number;
 };
 
-export type RawSchemaArray = {
-  type: "array";
+export type RawSchemaArray = RawSchemaBase & {
+  type?: "array";
   maxItems?: number;
-  description?: string;
-  example?: ReadonlyArray<any>;
   items: RawSchema;
 };
 
-export type RawSchemaObject = {
+export type RawSchemaObject = RawSchemaBase & {
   type?: "object";
   required?: ReadonlyArray<string>;
-  description?: string;
-  example?: any;
   properties: {
     [key in string]: RawSchema;
   };
 };
 
-export type RawSchemaRef = {
+export type RawSchemaObjectRef = RawSchemaBase & {
+  type?: "object";
   $ref: string;
 };
 
-export type RawSchemaContent = {
+export type RawSchemaRef = RawSchemaBase & {
+  $ref: string;
+};
+
+export type RawSchemaContent = RawSchemaBase & {
   content: {
     [key in string]: {
       schema: RawSchema;
     };
   };
-  description?: string;
   required?: boolean;
 };
 
-export type RawSchemaAllOf = {
+export type RawSchemaAllOf = RawSchemaBase & {
   allOf: ReadonlyArray<RawSchema>;
 };
 
@@ -75,6 +76,7 @@ export type RawSchema =
   | RawSchemaInteger
   | RawSchemaArray
   | RawSchemaObject
+  | RawSchemaObjectRef
   | RawSchemaRef
   | RawSchemaContent
   | RawSchemaAllOf;
