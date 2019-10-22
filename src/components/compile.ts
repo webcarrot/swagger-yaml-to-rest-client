@@ -12,13 +12,15 @@ const compileComponentSchema = (
   { id, schema }: ComponentSchema
 ): CompileOutput => ({
   path: `components/${componentId}/${id}.d.ts`,
-  content: compileSchema(id, schema)
+  content: compileSchema(id, `components/${componentId}`, schema)
 });
 
 const compileComponent = ({ id, schemas }: Component): CompileOutput[] => [
   {
     path: `components/${id}/index.d.ts`,
-    content: schemas.map(({ id }) => `export * from "${id}";`).join("\n")
+    content: schemas
+      .map(({ id }) => `export { ${id} } from "./${id}";`)
+      .join("\n")
   },
   ...schemas.map(schema => compileComponentSchema(id, schema))
 ];

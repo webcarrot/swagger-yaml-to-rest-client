@@ -1,0 +1,1 @@
+{"version":3,"file":"warnRest.js","sourceRoot":"","sources":["../../../src/utils/parse/warnRest.ts"],"names":[],"mappings":";;AAAa,QAAA,QAAQ,GAAG,CAAC,IAAS,EAAE,IAAY,EAAE,EAAE;IAClD,IAAI,IAAI,IAAI,MAAM,CAAC,IAAI,CAAC,IAAI,CAAC,CAAC,MAAM,EAAE;QACpC,OAAO,CAAC,IAAI,CAAC,mBAAmB,IAAI,GAAG,EAAE,IAAI,CAAC,CAAC;KAChD;AACH,CAAC,CAAC"}

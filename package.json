@@ -34,6 +34,7 @@
   "homepage": "https://github.com/webcarrot/swagger-yaml-to-rest-client#readme",
   "devDependencies": {
     "@types/node": "^12.7.11",
+    "@types/prettier": "^1.18.3",
     "@types/yaml": "^1.2.0",
     "@types/yargs": "^13.0.3",
     "@webcarrot/copy-declaration-ts": "^1.0.0",
@@ -42,6 +43,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "prettier": "^1.18.2",
     "yaml": "^1.7.1",
     "yargs": "^14.2.0"
   }
