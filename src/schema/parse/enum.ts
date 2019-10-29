@@ -1,7 +1,15 @@
-import { RawSchemaString, SchemaEnum, RawSchemaNumber } from "../../types";
+import {
+  RawSchemaString,
+  SchemaEnum,
+  RawSchemaNumber,
+  ParseSchemaFn
+} from "../../types";
 import { warnRest } from "../../utils";
 
-export const parseRawSchemaEnum = ({
+export const parseRawSchemaEnum: ParseSchemaFn<
+  RawSchemaString | RawSchemaNumber,
+  SchemaEnum
+> = ({
   description,
   example,
   enum: enuM,
@@ -9,7 +17,7 @@ export const parseRawSchemaEnum = ({
   type: _,
   format: __,
   ...rest
-}: RawSchemaString | RawSchemaNumber): SchemaEnum => {
+}) => {
   warnRest(rest, "enum");
   return {
     type: "enum",

@@ -1,15 +1,11 @@
-import { RawSchemaOneOf, SchemaOneOf } from "../../types";
+import { RawSchemaOneOf, SchemaOneOf, ParseSchemaFn } from "../../types";
 import { warnRest } from "../../utils";
 import { parseRawSchema } from "./parse";
 
-export const parseRawSchemaOneOf = ({
-  description,
-  example,
-  title: name,
-  oneOf,
-  required,
-  ...rest
-}: RawSchemaOneOf): SchemaOneOf => {
+export const parseRawSchemaOneOf: ParseSchemaFn<
+  RawSchemaOneOf,
+  SchemaOneOf
+> = ({ description, example, title: name, oneOf, required, ...rest }) => {
   warnRest(rest, "oneOf");
   return {
     type: "oneOf",

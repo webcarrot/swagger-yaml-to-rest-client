@@ -1,2 +1,2 @@
-import { RawSchemaString, SchemaEnum, RawSchemaNumber } from "../../types";
-export declare const parseRawSchemaEnum: ({ description, example, enum: enuM, title: name, type: _, format: __, ...rest }: RawSchemaString | RawSchemaNumber) => SchemaEnum;
+import { RawSchemaString, SchemaEnum, RawSchemaNumber, ParseSchemaFn } from "../../types";
+export declare const parseRawSchemaEnum: ParseSchemaFn<RawSchemaString | RawSchemaNumber, SchemaEnum>;

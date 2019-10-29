@@ -39,6 +39,10 @@ export interface SchemaObjectDiscriminator {
 
 export interface SchemaObject extends SchemaBase<"object"> {
   properties: ReadonlyArray<SchemaObjectPropery>;
+}
+
+export interface SchemaDiscriminator extends SchemaBase<"discriminator"> {
+  properties: ReadonlyArray<SchemaObjectPropery>;
   discriminator?: SchemaObjectDiscriminator;
 }
 
@@ -87,6 +91,7 @@ export type Schema =
   | SchemaEnum
   | SchemaArray
   | SchemaObject
+  | SchemaDiscriminator
   | SchemaRef
   | SchemaContent
   | SchemaAllOf

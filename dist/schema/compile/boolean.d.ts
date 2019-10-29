@@ -1,2 +1,2 @@
-import { CompileInfo, SchemaBoolean } from "../../types";
-export declare const compileSchemaBoolean: (schema: SchemaBoolean, id: string) => CompileInfo;
+import { SchemaBoolean, CompileSchemaFn } from "../../types";
+export declare const compileSchemaBoolean: CompileSchemaFn<SchemaBoolean>;

@@ -7,22 +7,27 @@ import {
 
 import { compileSchema } from "../schema";
 
-const compileComponentSchema = (
+const compileComponentSchema = async (
   componentId: string,
   { id, schema }: ComponentSchema
-): CompileOutput => ({
+): Promise<CompileOutput> => ({
   path: `components/${componentId}/${id}.d.ts`,
-  content: compileSchema(id, `components/${componentId}`, schema)
+  content: await compileSchema(id, `components/${componentId}`, schema)
 });
 
-const compileComponent = ({ id, schemas }: Component): CompileOutput[] => [
+const compileComponent = async ({
+  id,
+  schemas
+}: Component): Promise<CompileOutput[]> => [
   {
     path: `components/${id}/index.d.ts`,
     content: schemas
       .map(({ id }) => `export { ${id} } from "./${id}";`)
       .join("\n")
   },
-  ...schemas.map(schema => compileComponentSchema(id, schema))
+  ...(await Promise.all(
+    schemas.map(schema => compileComponentSchema(id, schema))
+  ))
 ];
 
 export const compileComponents = (comonents: Components): CompileOutput[] =>

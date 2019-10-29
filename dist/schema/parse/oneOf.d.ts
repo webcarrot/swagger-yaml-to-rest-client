@@ -1,2 +1,2 @@
-import { RawSchemaOneOf, SchemaOneOf } from "../../types";
-export declare const parseRawSchemaOneOf: ({ description, example, title: name, oneOf, required, ...rest }: RawSchemaOneOf) => SchemaOneOf;
+import { RawSchemaOneOf, SchemaOneOf, ParseSchemaFn } from "../../types";
+export declare const parseRawSchemaOneOf: ParseSchemaFn<RawSchemaOneOf, SchemaOneOf>;

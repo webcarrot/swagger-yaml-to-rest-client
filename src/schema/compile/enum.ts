@@ -1,10 +1,12 @@
-import { CompileInfo, SchemaEnum } from "../../types";
+import { SchemaEnum, CompileSchemaFn } from "../../types";
 import { compileDocs } from "../../utils";
 
-export const compileSchemaEnum = (
-  schema: SchemaEnum,
-  id?: string
-): CompileInfo => {
+export const compileSchemaEnum: CompileSchemaFn<SchemaEnum> = async (
+  schema,
+  id,
+  registerId,
+  register
+) => {
   const docs = compileDocs([
     {
       key: "enum",
@@ -23,6 +25,13 @@ export const compileSchemaEnum = (
       content: schema.name
     }
   ]);
+  if (registerId) {
+    await register({
+      id: registerId,
+      dependencies: [],
+      schema
+    });
+  }
   return {
     importTypes: [],
     content: `${docs}${id}${(schema.enum as any[])

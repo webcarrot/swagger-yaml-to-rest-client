@@ -1,13 +1,10 @@
-import { RawSchemaBoolean, SchemaBoolean } from "../../types";
+import { RawSchemaBoolean, SchemaBoolean, ParseSchemaFn } from "../../types";
 import { warnRest } from "../../utils";
 
-export const parseRawSchemaBoolean = ({
-  description,
-  example,
-  title: name,
-  type: _,
-  ...rest
-}: RawSchemaBoolean): SchemaBoolean => {
+export const parseRawSchemaBoolean: ParseSchemaFn<
+  RawSchemaBoolean,
+  SchemaBoolean
+> = ({ description, example, title: name, type: _, ...rest }) => {
   warnRest(rest, "boolean");
   return {
     type: "boolean",

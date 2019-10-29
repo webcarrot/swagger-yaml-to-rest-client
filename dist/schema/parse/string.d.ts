@@ -1,2 +1,2 @@
-import { RawSchemaString, SchemaString, SchemaEnum } from "../../types";
-export declare const parseRawSchemaString: (data: RawSchemaString) => SchemaString | SchemaEnum;
+import { RawSchemaString, SchemaString, SchemaEnum, ParseSchemaFn } from "../../types";
+export declare const parseRawSchemaString: ParseSchemaFn<RawSchemaString, SchemaString | SchemaEnum>;

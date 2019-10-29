@@ -1,2 +1,2 @@
-import { RawSchema, SchemaAny } from "../../types";
-export declare const parseRawSchemaAny: (data: RawSchema) => SchemaAny;
+import { RawSchema, SchemaAny, ParseSchemaFn } from "../../types";
+export declare const parseRawSchemaAny: ParseSchemaFn<RawSchema, SchemaAny>;

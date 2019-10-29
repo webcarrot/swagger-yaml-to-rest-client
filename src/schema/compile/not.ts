@@ -1,4 +1,4 @@
-import { CompileInfo, SchemaNot } from "../../types";
+import { SchemaNot, CompileSchemaFn } from "../../types";
 
 import { compileDocs } from "../../utils";
 
@@ -9,6 +9,7 @@ const TYPES: ReadonlyArray<SchemaNot["exclude"]> = [
   "object",
   "string"
 ];
+
 const TYPES_TO_TYPE: { [key in SchemaNot["exclude"]]: string } = {
   array: "Array<any>",
   boolean: "boolean",
@@ -17,10 +18,12 @@ const TYPES_TO_TYPE: { [key in SchemaNot["exclude"]]: string } = {
   string: "string"
 };
 
-export const compileSchemaNot = (
+export const compileSchemaNot: CompileSchemaFn<SchemaNot> = async (
   schema: SchemaNot,
-  id: string
-): CompileInfo => {
+  id: string,
+  registerId,
+  register
+) => {
   const docs = compileDocs([
     {
       key: "description",
@@ -35,9 +38,18 @@ export const compileSchemaNot = (
       content: schema.name
     }
   ]);
+
   const content = TYPES.filter(v => v !== schema.exclude)
     .map(v => TYPES_TO_TYPE[v])
     .join("|");
+
+  if (registerId) {
+    await register({
+      id: registerId,
+      dependencies: [],
+      schema
+    });
+  }
 
   return {
     importTypes: [],

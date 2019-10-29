@@ -1,13 +1,13 @@
-import { RawSchemaNot, SchemaNot } from "../../types";
+import { RawSchemaNot, SchemaNot, ParseSchemaFn } from "../../types";
 import { warnRest } from "../../utils";
 
-export const parseRawSchemaNot = ({
+export const parseRawSchemaNot: ParseSchemaFn<RawSchemaNot, SchemaNot> = ({
   description,
   example,
   title: name,
   not: { type: exclude },
   ...rest
-}: RawSchemaNot): SchemaNot => {
+}) => {
   warnRest(rest, "not");
   return {
     type: "not",

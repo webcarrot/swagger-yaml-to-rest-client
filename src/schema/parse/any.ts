@@ -1,6 +1,8 @@
-import { RawSchema, SchemaAny } from "../../types";
+import { RawSchema, SchemaAny, ParseSchemaFn } from "../../types";
 
-export const parseRawSchemaAny = (data: RawSchema): SchemaAny => {
+export const parseRawSchemaAny: ParseSchemaFn<RawSchema, SchemaAny> = (
+  data
+): SchemaAny => {
   console.warn("ANY TYPE", data);
   return {
     type: "any",

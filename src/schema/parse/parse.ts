@@ -1,4 +1,4 @@
-import { RawSchema, Schema } from "../../types";
+import { RawSchema, Schema, ParseSchemaFn } from "../../types";
 import { parseRawSchemaBoolean } from "./boolean";
 import { parseRawSchemaString } from "./string";
 import { parseRawSchemaNumber } from "./number";
@@ -12,10 +12,10 @@ import { parseRawSchemaOneOf } from "./oneOf";
 import { parseRawSchemaAny } from "./any";
 import { parseRawSchemaNot } from "./not";
 
-export const parseRawSchema = (
-  data: RawSchema,
-  required?: ReadonlyArray<string>
-): Schema => {
+export const parseRawSchema: ParseSchemaFn<RawSchema, Schema> = (
+  data,
+  required
+) => {
   if ("type" in data) {
     switch (data.type) {
       case "boolean":

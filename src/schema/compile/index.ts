@@ -4,15 +4,15 @@ import { format } from "prettier";
 import { compile } from "./compile";
 import { compileImportTypes } from "../../utils/compile/reference";
 
-export const compileSchema = (
+export const compileSchema = async (
   id: string,
   path: string,
   schema: Schema
-): string => {
+): Promise<string> => {
   if (!schema) {
     return "";
   }
-  const info = compile(schema, `export type ${id} = `);
+  const info = await compile(schema, `export type ${id} = `);
   if (info) {
     return format(
       `// ${path}/${id}

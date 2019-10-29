@@ -1,13 +1,13 @@
-import { RawSchemaRef, SchemaRef } from "../../types";
+import { RawSchemaRef, SchemaRef, ParseSchemaFn } from "../../types";
 import { warnRest } from "../../utils";
 
-export const parseRawSchemaRef = ({
+export const parseRawSchemaRef: ParseSchemaFn<RawSchemaRef, SchemaRef> = ({
   description,
   example,
   title: name,
   $ref: ref,
   ...rest
-}: RawSchemaRef): SchemaRef => {
+}) => {
   warnRest(rest, "ref");
   return {
     type: "ref",

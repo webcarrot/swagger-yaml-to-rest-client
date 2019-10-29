@@ -1,15 +1,18 @@
-import { RawSchemaContent, SchemaContent } from "../../types";
+import { RawSchemaContent, SchemaContent, ParseSchemaFn } from "../../types";
 import { warnRest } from "../../utils";
 import { parseRawSchema } from "./parse";
 
-export const parseRawSchemaContent = ({
+export const parseRawSchemaContent: ParseSchemaFn<
+  RawSchemaContent,
+  SchemaContent
+> = ({
   description,
   example,
   title: name,
   required = false,
   content,
   ...rest
-}: RawSchemaContent): SchemaContent => {
+}) => {
   warnRest(rest, "content");
   return {
     type: "content",

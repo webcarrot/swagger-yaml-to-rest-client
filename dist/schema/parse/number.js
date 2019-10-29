@@ -13,7 +13,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../../utils");
 const enum_1 = require("./enum");
-exports.parseRawSchemaNumber = (data) => {
+exports.parseRawSchemaNumber = data => {
     if ("enum" in data) {
         return enum_1.parseRawSchemaEnum(data);
     }

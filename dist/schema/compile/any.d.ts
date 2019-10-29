@@ -1,2 +1,2 @@
-import { CompileInfo, SchemaAny } from "../../types";
-export declare const compileSchemaAny: (schema: SchemaAny, id: string) => CompileInfo;
+import { SchemaAny, CompileSchemaFn } from "../../types";
+export declare const compileSchemaAny: CompileSchemaFn<SchemaAny>;

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("../../utils");
-exports.compileSchemaString = (schema, id) => {
+exports.compileSchemaString = async (schema, id, registerId, register) => {
     const docs = utils_1.compileDocs([
         {
             key: "description",
@@ -28,6 +28,13 @@ exports.compileSchemaString = (schema, id) => {
             content: schema.maxLength
         }
     ]);
+    if (registerId) {
+        await register({
+            id: registerId,
+            dependencies: [],
+            schema
+        });
+    }
     return {
         importTypes: [],
         content: `${docs}${id}string`

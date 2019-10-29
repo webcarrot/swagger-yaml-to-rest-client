@@ -1,2 +1,2 @@
-import { CompileInfo, SchemaNot } from "../../types";
-export declare const compileSchemaNot: (schema: SchemaNot, id: string) => CompileInfo;
+import { SchemaNot, CompileSchemaFn } from "../../types";
+export declare const compileSchemaNot: CompileSchemaFn<SchemaNot>;

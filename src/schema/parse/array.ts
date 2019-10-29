@@ -1,8 +1,11 @@
-import { SchemaArray, RawSchemaArray } from "../../types";
+import { SchemaArray, RawSchemaArray, ParseSchemaFn } from "../../types";
 import { warnRest } from "../../utils";
 import { parseRawSchema } from "./parse";
 
-export const parseRawSchemaArray = ({
+export const parseRawSchemaArray: ParseSchemaFn<
+  RawSchemaArray,
+  SchemaArray
+> = ({
   description,
   example,
   title: name,
@@ -10,7 +13,7 @@ export const parseRawSchemaArray = ({
   items,
   type: _,
   ...rest
-}: RawSchemaArray): SchemaArray => {
+}) => {
   warnRest(rest, "array");
   return {
     type: "array",

@@ -1,10 +1,16 @@
-import { RawSchemaString, SchemaString, SchemaEnum } from "../../types";
+import {
+  RawSchemaString,
+  SchemaString,
+  SchemaEnum,
+  ParseSchemaFn
+} from "../../types";
 import { warnRest } from "../../utils";
 import { parseRawSchemaEnum } from "./enum";
 
-export const parseRawSchemaString = (
-  data: RawSchemaString
-): SchemaString | SchemaEnum => {
+export const parseRawSchemaString: ParseSchemaFn<
+  RawSchemaString,
+  SchemaString | SchemaEnum
+> = data => {
   if ("enum" in data) {
     return parseRawSchemaEnum(data);
   } else {

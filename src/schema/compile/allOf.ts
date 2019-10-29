@@ -1,12 +1,15 @@
-import { CompileInfo, SchemaAllOf, Schema } from "../../types";
+import { CompileInfo, SchemaAllOf, Schema, CompileSchemaFn } from "../../types";
 
 import { compileDocs } from "../../utils";
 import { compile } from "./compile";
 
-const compileSchemaAllOfTypes = (types: ReadonlyArray<Schema>): CompileInfo =>
-  types.reduce<CompileInfo>(
-    (info, schema) => {
-      const data = compile(schema, "");
+const compileSchemaAllOfTypes = async (
+  types: ReadonlyArray<Schema>
+): Promise<CompileInfo> =>
+  types.reduce<Promise<CompileInfo>>(
+    async (out, schema) => {
+      const info = await out;
+      const data = await compile(schema, "");
       if (data) {
         return {
           importTypes: info.importTypes.concat(data.importTypes),
@@ -17,16 +20,18 @@ ${data.content}`
         return info;
       }
     },
-    {
+    Promise.resolve({
       importTypes: [],
       content: ""
-    }
+    })
   );
 
-export const compileSchemaAllOf = (
-  schema: SchemaAllOf,
-  id: string
-): CompileInfo => {
+export const compileSchemaAllOf: CompileSchemaFn<SchemaAllOf> = async (
+  schema,
+  id,
+  registerId,
+  register
+) => {
   const docs = compileDocs([
     {
       key: "description",
@@ -41,7 +46,14 @@ export const compileSchemaAllOf = (
       content: schema.name
     }
   ]);
-  const { content, importTypes } = compileSchemaAllOfTypes(schema.types);
+  const { content, importTypes } = await compileSchemaAllOfTypes(schema.types);
+  if (registerId) {
+    await register({
+      id: registerId,
+      dependencies: importTypes,
+      schema
+    });
+  }
   return {
     importTypes,
     content: `${docs}${id}${content}`

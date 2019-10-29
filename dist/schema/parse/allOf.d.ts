@@ -1,2 +1,2 @@
-import { RawSchemaAllOf, SchemaAllOf } from "../../types";
-export declare const parseRawSchemaAllOf: ({ description, example, title: name, allOf, required, ...rest }: RawSchemaAllOf) => SchemaAllOf;
+import { RawSchemaAllOf, SchemaAllOf, ParseSchemaFn } from "../../types";
+export declare const parseRawSchemaAllOf: ParseSchemaFn<RawSchemaAllOf, SchemaAllOf>;

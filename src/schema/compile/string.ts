@@ -1,10 +1,12 @@
-import { CompileInfo, SchemaString } from "../../types";
+import { SchemaString, CompileSchemaFn } from "../../types";
 import { compileDocs } from "../../utils";
 
-export const compileSchemaString = (
-  schema: SchemaString,
-  id: string
-): CompileInfo => {
+export const compileSchemaString: CompileSchemaFn<SchemaString> = async (
+  schema,
+  id,
+  registerId,
+  register
+) => {
   const docs = compileDocs([
     {
       key: "description",
@@ -31,6 +33,15 @@ export const compileSchemaString = (
       content: schema.maxLength
     }
   ]);
+
+  if (registerId) {
+    await register({
+      id: registerId,
+      dependencies: [],
+      schema
+    });
+  }
+
   return {
     importTypes: [],
     content: `${docs}${id}string`

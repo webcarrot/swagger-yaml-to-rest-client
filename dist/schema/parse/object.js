@@ -23,18 +23,33 @@ exports.parseRawSchemaObject = (data, optRequired) => {
     else if ("properties" in data) {
         const { description, example, title: name, properties, required = optRequired, discriminator, type: _ } = data, rest = __rest(data, ["description", "example", "title", "properties", "required", "discriminator", "type"]);
         utils_1.warnRest(rest, "object");
-        return {
-            type: "object",
-            description,
-            example,
-            name,
-            properties: Object.keys(properties).map(id => ({
-                id,
-                required: !!(required && required.includes(id)),
-                schema: parse_1.parseRawSchema(properties[id])
-            })),
-            discriminator
-        };
+        if (discriminator) {
+            return {
+                type: "discriminator",
+                description,
+                example,
+                name,
+                properties: Object.keys(properties).map(id => ({
+                    id,
+                    required: !!(required && required.includes(id)),
+                    schema: parse_1.parseRawSchema(properties[id])
+                })),
+                discriminator
+            };
+        }
+        else {
+            return {
+                type: "object",
+                description,
+                example,
+                name,
+                properties: Object.keys(properties).map(id => ({
+                    id,
+                    required: !!(required && required.includes(id)),
+                    schema: parse_1.parseRawSchema(properties[id])
+                }))
+            };
+        }
     }
     else if (data && data.type === "object") {
         const { description, example, title: name, type: _ } = data, rest = __rest(data, ["description", "example", "title", "type"]);

@@ -2,18 +2,19 @@ import {
   SchemaObject,
   SchemaObjectPropery,
   CompileInfo,
-  SchemaObjectDiscriminator
+  CompileSchemaFn
 } from "../../types";
 
-import { compileDocs, parseRef } from "../../utils";
+import { compileDocs } from "../../utils";
 import { compile } from "./compile";
 
-const compileSchemaObjectProperties = (
+const compileSchemaObjectProperties = async (
   properties: ReadonlyArray<SchemaObjectPropery>
-): CompileInfo =>
-  properties.reduce<CompileInfo>(
-    (info, property) => {
-      const data = compileSchemaObjectProperty(property);
+): Promise<CompileInfo> =>
+  properties.reduce<Promise<CompileInfo>>(
+    async (out, property) => {
+      const info = await out;
+      const data = await compileSchemaObjectProperty(property);
       if (data) {
         return {
           importTypes: info.importTypes.concat(data.importTypes),
@@ -24,76 +25,23 @@ ${data.content};`
         return info;
       }
     },
-    {
+    Promise.resolve({
       importTypes: [],
       content: ""
-    }
+    })
   );
 
-const compileSchemaObjectPropertiesAndDiscriminator = (
-  properties: ReadonlyArray<SchemaObjectPropery>,
-  { propertyName, mapping }: SchemaObjectDiscriminator
-): CompileInfo => {
-  const { content, importTypes } = properties.reduce<CompileInfo>(
-    (info, property) => {
-      if (property.id === propertyName) {
-        return info;
-      }
-      const data = compileSchemaObjectProperty(property);
-      if (data) {
-        return {
-          importTypes: info.importTypes.concat(data.importTypes),
-          content: `${info.content}
-  ${data.content};`
-        };
-      } else {
-        return info;
-      }
-    },
-    {
-      importTypes: [],
-      content: ""
-    }
-  );
-
-  const {
-    content: mappingContent,
-    importTypes: mappingImportTypes
-  } = Object.keys(mapping).reduce<CompileInfo>(
-    (info, value) => {
-      const importType = parseRef(mapping[value]);
-
-      return {
-        importTypes: info.importTypes.concat([importType]),
-        content: `${info.content} | 
-        (
-          {
-            "${propertyName}": ${JSON.stringify(value)};
-          } & ${importType.id}
-        )`
-      };
-    },
-    {
-      importTypes: [],
-      content: ""
-    }
-  );
-
-  return {
-    content: `{${content}} & (${mappingContent})`,
-    importTypes: importTypes.concat(mappingImportTypes)
-  };
-};
-
-const compileSchemaObjectProperty = (
+const compileSchemaObjectProperty = async (
   property: SchemaObjectPropery
-): CompileInfo =>
+): Promise<CompileInfo> =>
   compile(property.schema, `"${property.id}"${property.required ? "" : "?"}:`);
 
-export const compileSchemaObject = (
-  schema: SchemaObject,
-  id: string
-): CompileInfo => {
+export const compileSchemaObject: CompileSchemaFn<SchemaObject> = async (
+  schema,
+  id,
+  registerId,
+  register
+) => {
   const docs = compileDocs([
     {
       key: "description",
@@ -108,25 +56,21 @@ export const compileSchemaObject = (
       content: schema.name
     }
   ]);
-  if (schema.discriminator) {
-    const {
-      content,
-      importTypes
-    } = compileSchemaObjectPropertiesAndDiscriminator(
-      schema.properties,
-      schema.discriminator
-    );
-    return {
-      importTypes,
-      content: `${docs}${id}${content}`
-    };
-  } else {
-    const { content, importTypes } = compileSchemaObjectProperties(
-      schema.properties
-    );
-    return {
-      importTypes,
-      content: `${docs}${id}{${content}}`
-    };
+
+  const { content, importTypes } = await compileSchemaObjectProperties(
+    schema.properties
+  );
+
+  if (registerId) {
+    await register({
+      id: registerId,
+      dependencies: importTypes,
+      schema
+    });
   }
+
+  return {
+    importTypes,
+    content: `${docs}${id}{${content}}`
+  };
 };

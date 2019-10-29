@@ -15,7 +15,7 @@ const TYPES_TO_TYPE = {
     object: "object",
     string: "string"
 };
-exports.compileSchemaNot = (schema, id) => {
+exports.compileSchemaNot = async (schema, id, registerId, register) => {
     const docs = utils_1.compileDocs([
         {
             key: "description",
@@ -33,6 +33,13 @@ exports.compileSchemaNot = (schema, id) => {
     const content = TYPES.filter(v => v !== schema.exclude)
         .map(v => TYPES_TO_TYPE[v])
         .join("|");
+    if (registerId) {
+        await register({
+            id: registerId,
+            dependencies: [],
+            schema
+        });
+    }
     return {
         importTypes: [],
         content: `${docs}${id}${content}`
